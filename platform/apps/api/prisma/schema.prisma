@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  name          String
+  passwordHash  String
+  credits       Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  sessions      Session[]
+  resets        PasswordReset[]
+  projects      Project[]
+  videos        Video[]
+  creditEntries CreditEntry[]
+  usage         UsageEvent[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model PasswordReset {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Project {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String      @default("Untitled cut")
+  product         String      @default("")
+  pitch           String      @default("")
+  audience        String      @default("")
+  offer           String      @default("")
+  angle           String      @default("confession")
+  language        String      @default("en")
+  creatorId       String      @default("maya")
+  sceneId         String      @default("kitchen")
+  format          String      @default("talking")
+  aspect          String      @default("story")
+  captionStyle    String      @default("punch")
+  speed           Float       @default(1)
+  script          Json
+  productImageKey String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  voiceTakes      VoiceTake[]
+  videos          Video[]
+
+  @@index([userId, updatedAt])
+}
+
+model VoiceTake {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  text        String
+  voiceId     String
+  language    String
+  speed       Float
+  audioKey    String
+  contentType String
+  duration    Float
+  cues        Json
+  createdAt   DateTime @default(now())
+
+  @@index([projectId, createdAt])
+}
+
+enum VideoStatus {
+  pending
+  ready
+  failed
+}
+
+model Video {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId    String?
+  project      Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  status       VideoStatus   @default(pending)
+  xaiRequestId String?       @unique
+  prompt       String
+  hook         String
+  aspect       String
+  creatorId    String
+  fileKey      String?
+  error        String?
+  checks       Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  completedAt  DateTime?
+  creditEntries CreditEntry[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+enum CreditReason {
+  signup_grant
+  video_debit
+  video_refund
+  admin_grant
+  purchase
+}
+
+model CreditEntry {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  delta     Int
+  reason    CreditReason
+  note      String?
+  videoId   String?
+  video     Video?       @relation(fields: [videoId], references: [id], onDelete: SetNull)
+  createdAt DateTime     @default(now())
+
+  @@index([userId, createdAt])
+}
+
+enum UsageKind {
+  script
+  voice
+}
+
+model UsageEvent {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      UsageKind
+  createdAt DateTime  @default(now())
+
+  @@index([userId, kind, createdAt])
+}

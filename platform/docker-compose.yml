@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: castly
+      POSTGRES_PASSWORD: castly
+      POSTGRES_DB: castly
+    ports:
+      - "5432:5432"
+    volumes:
+      - castly-pg:/var/lib/postgresql/data
+      - ./docker/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+
+volumes:
+  castly-pg:

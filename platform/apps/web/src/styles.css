@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* Tokens from the minimal Geist design: white ground, #111 ink, gray scale, pastel tiles. */
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-ink: #111111;
+  --color-ink-hover: #2e2e2e;
+  --color-soft: #858585;
+  --color-muted: #6b7280;
+  --color-line: #e5e7eb;
+  --color-hair: #f3f4f6;
+  --color-subtle: #f9fafb;
+  --color-peach: #ffedd5;
+  --color-sky: #dbeafe;
+  --color-butter: #fef3c7;
+  --color-danger: #b42318;
+  --color-ok: #067647;
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-ink);
+    color: #ffffff;
+  }
+}
+
+@keyframes letter-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+@keyframes read {
+  0% { color: var(--color-soft); }
+  3%, 70% { color: var(--color-ink); }
+  75%, 100% { color: var(--color-soft); }
+}
+@keyframes drift {
+  0%, 100% { transform: translateY(0) scale(1.02); }
+  50% { transform: translateY(-6px) scale(1.02); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(260%); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Letter-by-letter rise used by SplitHeadline. */
+.letter {
+  display: inline-block;
+  animation: letter-in 0.8s var(--ease-expo) both;
+}
+.fade-up {
+  animation: fade-up 0.9s var(--ease-expo) both;
+}
+.stagger > * {
+  animation: fade-up 0.8s var(--ease-expo) both;
+}
+.stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger > *:nth-child(3) { animation-delay: 0.14s; }
+.stagger > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger > *:nth-child(5) { animation-delay: 0.26s; }
+.stagger > *:nth-child(6) { animation-delay: 0.32s; }
+.stagger > *:nth-child(n + 7) { animation-delay: 0.38s; }
+
+/* Scroll reveal (toggled by <Reveal>). */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.read-word {
+  color: var(--color-soft);
+  animation: read 6s linear infinite;
+}
+.drift {
+  animation: drift 6s ease-in-out infinite;
+}
+.wave-bar {
+  transform-origin: center;
+}
+.wave-bar.is-live {
+  animation: wave 0.9s ease-in-out infinite;
+}
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee-track {
+  animation: marquee 45s linear infinite;
+}
+.marquee-mask:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.uline {
+  color: var(--color-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: color 0.3s var(--ease-std);
+}
+.uline:hover {
+  color: var(--color-ink);
+}
+
+.tile-zoom .tile-media {
+  transition: transform 0.8s var(--ease-expo);
+}
+.tile-zoom:hover .tile-media {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

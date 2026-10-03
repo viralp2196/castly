@@ -1,0 +1,25 @@
+{
+  "name": "castly-platform",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c gray,blue \"npm run dev -w @castly/api\" \"npm run dev -w @castly/web\"",
+    "build": "npm run build -w @castly/api && npm run build -w @castly/web",
+    "start": "npm run start -w @castly/api",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:migrate": "npm run db:migrate -w @castly/api",
+    "db:deploy": "npm run db:deploy -w @castly/api"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5",
+    "typescript": "~5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
