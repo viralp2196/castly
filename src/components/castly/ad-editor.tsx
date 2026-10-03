@@ -20,6 +20,7 @@ import {
 import { readProductImage } from "@/lib/castly/image";
 import { useCastly } from "@/lib/castly/store";
 import type { AdProject, FormatId } from "@/lib/castly/types";
+import { cutKey, useCutVideo } from "@/lib/castly/use-cut";
 import { useSpokenCut } from "@/lib/castly/use-spoken";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,8 @@ export function AdEditor({ project }: { project: AdProject }) {
   const duplicate = useCastly((state) => state.duplicate);
   const navigate = useNavigate();
   const spoken = useSpokenCut();
+  const cut = useCutVideo((url, key) => patch(project.id, { cutVideo: url, cutKey: key }));
+  const [showCut, setShowCut] = useState(true);
   const take = useRef(0);
   const [aiBusy, setAiBusy] = useState<null | "full" | "hooks">(null);
   const [aiError, setAiError] = useState<string | null>(null);
@@ -37,6 +40,9 @@ export function AdEditor({ project }: { project: AdProject }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const set = (partial: Partial<AdProject>) => patch(project.id, partial);
+  const currentKey = cutKey(project);
+  const clipMatches = Boolean(project.cutVideo) && project.cutKey === currentKey;
+  const making = cut.phase === "starting" || cut.phase === "rendering";
   const text = joinScript(project.script);
   const speakKey = `${getCreator(project.creatorId).voiceId}|${project.language}|${project.speed}|${text}`;
   const sameTake = spoken.activeKey === speakKey && speakKey.length > 0;
@@ -423,9 +429,31 @@ export function AdEditor({ project }: { project: AdProject }) {
         </div>
 
         <div className="order-1 lg:sticky lg:top-4 lg:order-2">
-          <PhoneStage project={project} spoken={spoken} onPrimary={onPrimary} />
+          <PhoneStage
+            project={project}
+            spoken={spoken}
+            onPrimary={onPrimary}
+            showGenerated={showCut && Boolean(project.cutVideo)}
+            rendering={making}
+          />
+          <div className="mx-auto mt-3 flex max-w-xs flex-col items-center gap-2">
+            <Button variant="brass" className="w-full" disabled={making} onClick={() => void cut.generate(project)}>
+              {making ? "Making the clip…" : clipMatches ? "Clip is saved — make another" : "Generate a 6s clip"}
+            </Button>
+            {project.cutVideo ? (
+              <button type="button" className="min-h-11 text-sm text-muted" onClick={() => setShowCut((value) => !value)}>
+                {showCut ? "Show the living still" : "Show the generated clip"}
+              </button>
+            ) : null}
+            <p className="text-center text-xs text-muted">
+              {clipMatches
+                ? "This clip matches the current hook and face. A new one spends another generation. Two per visit."
+                : "Makes a new 6-second take from this face and hook. About a minute. Two per visit. The file link can expire."}
+            </p>
+            {cut.error ? <p className="text-center text-sm text-primary">{cut.error}</p> : null}
+          </div>
           <p className="mx-auto mt-3 max-w-xs text-center text-xs text-muted">
-            Spoken cut. The face is a living still. The voice and the captions are the performance.
+            Hear this cut is still the spoken preview: a real voice on the still, captions on the words.
           </p>
           {spoken.error ? <p className="mt-2 text-center text-sm text-primary">{spoken.error}</p> : null}
           <audio ref={spoken.audioRef} preload="auto" className="audio-ghost" />
