@@ -8,12 +8,20 @@ export interface Mailer {
   send(mail: Mail): Promise<void>;
 }
 
-/** Sends through SMTP when configured; otherwise logs the email so local password resets still work. */
-export function createMailer(config: Config, logger: Logger): Mailer {
+/**
+ * Sends through SMTP when configured. Without SMTP, development prints the email
+ * (so local password resets work); production never logs the body, because it
+ * holds single-use reset links.
+ */
+export function createMailer(config: Pick<Config, "env" | "smtpUrl" | "mailFrom">, logger: Logger): Mailer {
   if (!config.smtpUrl) {
     return {
       async send(mail) {
-        logger.info({ to: mail.to, subject: mail.subject }, `email (not sent, no SMTP_URL):\n${mail.text}`);
+        if (config.env === "production") {
+          logger.error({ subject: mail.subject }, "SMTP_URL is not set; email was not sent");
+          return;
+        }
+        logger.info({ to: mail.to, subject: mail.subject }, `email (dev only, not sent; set SMTP_URL to deliver):\n${mail.text}`);
       },
     };
   }

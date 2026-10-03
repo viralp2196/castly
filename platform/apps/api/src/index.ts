@@ -1,19 +1,16 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
-import pino from "pino";
 import { createApp } from "./app";
 import { loadConfig } from "./config";
 import type { Deps } from "./deps";
+import { createLogger } from "./logger";
 import { createMailer } from "./mailer";
 import { createStorage } from "./storage";
 import { startVideoPoller } from "./videos/service";
 import { createXai } from "./xai";
 
 const config = loadConfig();
-const logger = pino({
-  level: config.env === "production" ? "info" : "debug",
-  transport: config.env === "development" ? { target: "pino/file", options: { destination: 1 } } : undefined,
-});
+const logger = createLogger(config);
 const prisma = new PrismaClient({ datasourceUrl: config.databaseUrl });
 
 const deps: Deps = {
