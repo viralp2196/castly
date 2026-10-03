@@ -26,6 +26,8 @@ export type AdProject = {
   speed: number;
   script: Script;
   productImage?: string;
+  cutVideo?: string;
+  cutKey?: string;
   createdAt: number;
   updatedAt: number;
 };

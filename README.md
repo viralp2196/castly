@@ -11,4 +11,4 @@ npm run dev
 
 Open the app, then **Hear this cut** on the sample. Scripts and voices use the xAI API when `XAI_API_KEY` is set on the server. Nothing is generated until you press the button.
 
-Drafts stay in the browser. The face is a living still. The voice and the captions are the performance.
+Drafts stay in the browser. Hear this cut is a real voice on a living still. Generate a 6s clip when you want a new take of that face saying the hook.
