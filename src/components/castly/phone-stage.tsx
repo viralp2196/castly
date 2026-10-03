@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { getCreator, getScene, wordCount } from "@/lib/castly/catalog";
 import { activeWordIndex, captionWindow } from "@/lib/castly/cues";
@@ -18,10 +18,14 @@ export function PhoneStage({
   project,
   spoken,
   onPrimary,
+  showGenerated = false,
+  rendering = false,
 }: {
   project: AdProject;
   spoken: Spoken;
   onPrimary: () => void;
+  showGenerated?: boolean;
+  rendering?: boolean;
 }) {
   const creator = getCreator(project.creatorId);
   const scene = getScene(project.sceneId);
@@ -48,11 +52,18 @@ export function PhoneStage({
         ? "text-left text-base font-medium"
         : "text-center text-2xl font-semibold caption-punch";
 
+  const clip = showGenerated && project.cutVideo ? project.cutVideo : "";
+  const [sound, setSound] = useState(false);
+
+  useEffect(() => {
+    setSound(false);
+  }, [clip]);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     if (phase === "playing") void video.play().catch(() => undefined);
-  }, [phase, creator.loop]);
+  }, [phase, creator.loop, clip]);
 
   const progress = duration > 0 ? Math.min(100, (time / duration) * 100) : 0;
   const label =
@@ -62,13 +73,13 @@ export function PhoneStage({
     <div className={cn("mx-auto w-full", width)}>
       <div className="rounded-xl bg-surface-3 p-1.5">
         <div className={cn("relative overflow-hidden rounded-lg bg-surface", frame)}>
-          <div className={cn("absolute inset-0 transition-opacity duration-300", showScene ? "opacity-0" : "opacity-100")}>
-            {creator.loop ? (
+          <div className={cn("absolute inset-0 transition-opacity duration-300", showScene && !clip ? "opacity-0" : "opacity-100")}>
+            {clip || creator.loop ? (
               <video
                 ref={videoRef}
-                src={creator.loop}
+                src={clip || creator.loop}
                 poster={creator.portrait}
-                muted
+                muted={!clip || !sound || phase === "playing"}
                 loop
                 playsInline
                 autoPlay
@@ -90,8 +101,10 @@ export function PhoneStage({
           <div className="absolute inset-x-0 top-0 h-1 bg-surface-3">
             <div className="h-full bg-primary" style={{ width: `${progress}%` }} />
           </div>
-          <div className="absolute left-3 top-3 rounded-md bg-bg/70 px-2 py-1 text-xs text-fg">{creator.name}</div>
-          {project.format === "in-hand" && project.productImage ? (
+          <div className="absolute left-3 top-3 rounded-md bg-bg/70 px-2 py-1 text-xs text-fg">
+            {clip ? "Generated cut" : creator.name}
+          </div>
+          {project.format === "in-hand" && project.productImage && !clip ? (
             <img
               src={project.productImage}
               alt={project.product || "Product"}
@@ -124,6 +137,11 @@ export function PhoneStage({
                 {phase === "playing" ? <Pause className="size-4" /> : <Play className="size-4" />}
                 {label}
               </button>
+              {clip ? (
+                <button type="button" onClick={() => setSound((value) => !value)} className="min-h-11 text-sm text-fg">
+                  {sound ? "Mute clip" : "Clip sound"}
+                </button>
+              ) : null}
               {phase === "playing" ? (
                 <span className="eq flex items-end gap-1" aria-hidden="true">
                   <span />
@@ -137,7 +155,11 @@ export function PhoneStage({
               </span>
             </div>
           </div>
-          {phase === "loading" ? (
+          {rendering ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-bg/50">
+              <p className="pulse-dot rounded-md bg-bg px-3 py-2 text-sm text-fg">Making a 6-second clip…</p>
+            </div>
+          ) : phase === "loading" ? (
             <div className="absolute inset-0 flex items-center justify-center bg-bg/50">
               <p className="pulse-dot rounded-md bg-bg px-3 py-2 text-sm text-fg">Casting the voice…</p>
             </div>
