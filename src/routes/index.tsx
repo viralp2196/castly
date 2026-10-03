@@ -153,7 +153,7 @@ function Home() {
               {[
                 [
                   "Does the mouth match the words?",
-                  "No. The face is a living still — a short loop or a held portrait. The voice is real, and the captions are timed to that voice. It's a spoken cut for writing and casting, not a lip-synced export.",
+                  "Hear this cut does not lip-sync. It plays a real voice over a living still, with captions on the words. Generate a 6s clip when you want a new take of that person saying the hook. That clip is a short generated video, not a finished export, and the link can expire.",
                 ],
                 [
                   "Where do the drafts live?",
@@ -165,7 +165,7 @@ function Home() {
                 ],
                 [
                   "Can I use my product?",
-                  "Yes. Add a photo and choose Product in frame. It sits in the corner of the shot while the creator talks.",
+                  "Yes. Add a photo and choose Product in frame. On the spoken preview it sits in the corner. On a generated clip it is sent as a reference so the pack can show up in the hand.",
                 ],
               ].map(([q, a]) => (
                 <details key={q} className="group py-4">
