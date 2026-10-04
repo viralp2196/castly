@@ -1,265 +1,241 @@
-import { getCreator, type Creator } from "@castly/shared";
-import { useRef } from "react";
+import { CREATORS, getCreator, type Creator } from "@castly/shared";
+import { useRef, type ReactNode } from "react";
 import { Link } from "react-router";
-import { SiteHeader } from "../components/Headers";
-import { Reveal, useReducedMotion } from "../components/Reveal";
-import { SplitHeadline } from "../components/SplitHeadline";
-import { ButtonLink, Mono, PauseIcon, SectionLabel } from "../components/ui";
-import { Waveform } from "../components/Waveform";
+import { Reveal } from "../components/Reveal";
 import { useMe } from "../lib/queries";
 
-const CAPTION = ["Okay,", "this", "cold", "brew", "just", "ended", "my", "3pm", "slump."];
-const HOOKS = [
-  "Okay, this cold brew just ended my 3pm slump.",
-  "POV: you stop paying café prices.",
-  "I did not expect a can to taste this good.",
-  "Same line, different creator.",
-  "Most pocket tees feel like a receipt after the dryer.",
+/** Three columns of creator portraits drifting up and down behind the hero card. */
+const COLUMNS: { ids: string[]; className: string }[] = [
+  { ids: ["maya", "aisha", "noah"], className: "col-a" },
+  { ids: ["jordan", "priya", "kenji"], className: "col-b" },
+  { ids: ["sofia", "leo", "jordan"], className: "col-c" },
 ];
-const STEPS = [
-  { n: "001", title: "Write", sub: "Start with the hook.", body: "Type the product line, pick an angle, and let the writer draft the hook, body and call to action." },
-  { n: "002", title: "Cast", sub: "Choose who says it.", body: "Pick the face and voice. Swap creators any time without touching the script." },
-  { n: "003", title: "Hear", sub: "Listen before you ship.", body: "Press play for a real voice, with captions locked word by word to the audio." },
-  { n: "004", title: "Ship", sub: "One take, one button.", body: "Pick a format and generate a 6s clip of that face saying the hook." },
-];
-const FEATURED = ["maya", "jordan", "aisha", "noah"].map(getCreator);
 
-function ReadingCaption({ className }: { className?: string }) {
+const STEPS = [
+  { n: "01", title: "Write", body: "The writer drafts the hook; you keep the one that sounds like you." },
+  { n: "02", title: "Cast", body: `Choose the face and voice from ${CREATORS.length} creators.` },
+  { n: "03", title: "Hear", body: "A real voice with captions locked to every word." },
+  { n: "04", title: "Ship", body: "A 6s clip for one credit; failed takes are refunded." },
+];
+
+const BARS = Array.from({ length: 30 }, (_, i) => ({
+  height: Math.round(6 + ((Math.sin(i * 1.7) + Math.sin(i * 0.63 + 1)) * 0.25 + 0.5) * 20),
+  delay: `${((i % 9) * 0.08).toFixed(2)}s`,
+}));
+
+function Accent({ children }: { children: ReactNode }) {
+  return <em className="font-serif font-normal italic tracking-[-0.01em] text-iris-soft">{children}</em>;
+}
+
+function ArrowRight() {
   return (
-    <p className={className}>
-      {CAPTION.map((word, i) => (
-        <span key={i} className="read-word" style={{ animationDelay: `${(i * 0.42).toFixed(2)}s` }}>
-          {word}{" "}
-        </span>
-      ))}
-    </p>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
   );
 }
 
-function HeroTile() {
-  const maya = getCreator("maya");
-  const reduced = useReducedMotion();
+function voiceName(creator: Creator) {
+  return `${creator.voiceId.charAt(0).toUpperCase()}${creator.voiceId.slice(1)} voice`;
+}
+
+function HeroColumns() {
+  const priya = getCreator("priya");
   return (
-    <div className="tile-zoom relative aspect-square overflow-hidden rounded-lg bg-peach">
-      {maya.loop && !reduced ? (
-        <video
-          className="tile-media drift absolute inset-0 size-full object-cover"
-          src={maya.loop}
-          poster={maya.portrait}
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-        />
-      ) : (
-        <img className="tile-media absolute inset-0 size-full object-cover" src={maya.portrait} alt="" />
-      )}
-      <span className="absolute left-4 top-4 rounded-md bg-white px-2.5 py-1.5 font-mono text-[13px]">Voice · Maya</span>
-      <span className="absolute right-4 top-4 rounded-md bg-white px-2.5 py-1.5 font-mono text-[13px]">0:06</span>
-      <div className="absolute inset-x-4 bottom-4 rounded-lg bg-white px-5 py-4">
-        <ReadingCaption className="text-[clamp(18px,1.8vw,24px)] font-medium leading-snug tracking-[-0.5px]" />
+    <div
+      className="cols cols-mask blur-in relative h-[520px] min-w-0 flex-[1_1_520px] overflow-hidden rounded-[36px] md:h-[720px]"
+      style={{ animationDelay: ".3s" }}
+      aria-hidden="true"
+    >
+      <div className="flex h-full gap-3">
+        {COLUMNS.map((column) => (
+          <div key={column.className} className="min-w-0 flex-1 overflow-hidden">
+            {/* The list is doubled and each tile carries its own bottom padding, so -50% loops seamlessly. */}
+            <div className={`${column.className} flex flex-col`}>
+              {[...column.ids, ...column.ids].map((id, i) => (
+                <div key={`${id}-${i}`} className="pb-3">
+                  <img src={getCreator(id).portrait} alt="" className="block aspect-[3/4] w-full rounded-[22px] object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="absolute inset-x-0 bottom-16 flex justify-center px-5">
+        <div className="glass-dark bob w-full max-w-[340px] rounded-3xl px-4 pb-4 pt-3.5 text-white">
+          <div className="flex justify-between font-mono text-[11px] tracking-[0.06em] text-fog">
+            <span>VOICE · {priya.name.split(" ")[0]!.toUpperCase()}</span>
+            <span>{priya.voiceId.toUpperCase()}</span>
+          </div>
+          <div className="mt-2.5 flex h-[26px] items-center justify-between gap-[3px]">
+            {BARS.map((bar, i) => (
+              <span
+                key={i}
+                className="wave-bar is-live block max-w-1 flex-1 rounded-sm bg-iris-soft"
+                style={{ height: bar.height, animationDelay: bar.delay }}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function BenchMock() {
-  return (
-    <section className="px-4 pb-16">
-      <div className="fade-up mx-auto max-w-[1440px]" style={{ animationDelay: ".6s" }}>
-        <div className="flex min-h-[420px] items-center justify-center rounded-lg bg-subtle p-6 md:aspect-[2/1]">
-          <div className="flex w-full max-w-[820px] flex-col gap-7 rounded-lg border border-line bg-white p-7">
-            <div className="flex flex-wrap gap-x-6 gap-y-2 text-[15px]">
-              {["Write", "Cast", "Hear", "Ship"].map((label, i) => (
-                <span key={label} className={i === 2 ? "border-b border-ink pb-1 text-ink" : "text-muted"}>
-                  <span className="font-mono text-xs">00{i + 1}</span> {label}
-                </span>
-              ))}
-            </div>
-            <div className="flex items-center gap-5">
-              <span className="flex size-[52px] shrink-0 items-center justify-center rounded-full bg-ink text-white">
-                <PauseIcon />
-              </span>
-              <Waveform progress={0.65} live bars={40} height={56} />
-              <span className="shrink-0 font-mono text-[13px] text-muted">0:04 / 0:06</span>
-            </div>
-            <ReadingCaption className="text-[clamp(22px,2.6vw,34px)] leading-tight tracking-[-1px]" />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CreatorTile({ creator }: { creator: Creator }) {
+function CreatorCard({ creator }: { creator: Creator }) {
   const video = useRef<HTMLVideoElement>(null);
   return (
-    <div
-      className="tile-zoom group/tile min-w-0 flex-[1_1_260px]"
+    <Link
+      to="/register"
+      className="lift tile-zoom group/tile block min-w-0"
       onMouseEnter={() => void video.current?.play().catch(() => undefined)}
       onMouseLeave={() => video.current?.pause()}
     >
-      <div className="relative mb-3 aspect-[3/4] overflow-hidden rounded-lg bg-hair">
-        <img className="tile-media absolute inset-0 size-full object-cover" src={creator.portrait} alt={`${creator.name}, ${creator.role}`} loading="lazy" />
+      <span className="relative block aspect-[4/5] overflow-hidden rounded-3xl bg-night-3">
+        <img src={creator.portrait} alt={`${creator.name}, ${creator.role}`} loading="lazy" className="tile-media absolute inset-0 size-full object-cover" />
         {creator.loop && (
           <video
             ref={video}
-            className="tile-media absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-500 group-hover/tile:opacity-100"
             src={creator.loop}
             muted
             loop
             playsInline
             preload="none"
             aria-hidden="true"
+            className="tile-media absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-500 group-hover/tile:opacity-100"
           />
         )}
-      </div>
-      <p className="text-[17px] font-medium">{creator.name}</p>
-      <p className="mt-0.5 text-sm text-muted">{creator.role}</p>
-    </div>
+      </span>
+      <span className="mt-3 block text-[17px] font-semibold text-white">{creator.name}</span>
+      <span className="mt-0.5 block font-mono text-[11px] uppercase tracking-[0.05em] text-dusk">
+        {voiceName(creator)} · {creator.role}
+      </span>
+    </Link>
   );
 }
 
 export function Landing() {
   const me = useMe().data;
-  const cta = me ? { to: "/app", label: "Open the bench" } : { to: "/register", label: "Start free" };
+  const primary = me ? { to: "/app", label: "Open the bench" } : { to: "/register", label: "Start free" };
 
   return (
-    <div className="bg-white text-ink">
-      <SiteHeader />
+    <div className="min-h-screen overflow-hidden bg-night font-sans text-white">
+      <header className="blur-in mx-auto flex max-w-[1376px] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-5 md:px-8">
+        <Link to="/" aria-label="Castly home" className="inline-flex items-center gap-1.5 font-display text-2xl font-bold tracking-[-0.03em]">
+          castly<span className="size-2 rounded-full bg-iris" />
+        </Link>
+        <nav aria-label="Main" className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px] font-medium text-fog">
+          <a href="#creators" className="transition-colors duration-300 hover:text-white">
+            Creators
+          </a>
+          <a href="#how" className="transition-colors duration-300 hover:text-white">
+            How it works
+          </a>
+          {!me && (
+            <Link to="/login" className="transition-colors duration-300 hover:text-white">
+              Sign in
+            </Link>
+          )}
+          <Link to={primary.to} className="btn-spring rounded-full bg-iris px-5 py-2.5 font-semibold text-white">
+            {primary.label}
+          </Link>
+        </nav>
+      </header>
+
       <main>
-        <section className="px-4 pb-2 pt-4">
-          <div className="mx-auto flex max-w-[1440px] flex-wrap items-stretch gap-x-1 gap-y-6">
-            <div className="flex min-w-0 flex-[1_1_480px] flex-col justify-end gap-10 py-10 md:py-16">
-              <SplitHeadline
-                className="max-w-[600px] text-[clamp(36px,5.5vw,64px)]"
-                parts={[
-                  { text: "Castly", strong: true },
-                  { text: "turns one" },
-                  { text: "line", strong: true },
-                  { text: "into a" },
-                  { text: "UGC ad", strong: true },
-                  { text: "you can" },
-                  { text: "hear.", strong: true },
-                ]}
-              />
-              <div className="fade-up" style={{ animationDelay: "1s" }}>
-                <p className="max-w-[540px] text-[clamp(17px,1.6vw,20px)] leading-[1.625] text-muted">
-                  Write the hook, cast a creator, and hear the cut with captions locked to a real voice. Nothing is generated until you press the button.
-                </p>
-                <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4">
-                  <ButtonLink to={cta.to} arrow>
-                    {cta.label}
-                  </ButtonLink>
-                  <a href="#how" className="uline text-[17px]">
-                    See how it works
-                  </a>
-                </div>
-                {!me && <Mono className="mt-4 block">Free credits on sign-up. No card needed.</Mono>}
-              </div>
+        <section className="mx-auto flex max-w-[1376px] flex-wrap items-center gap-14 px-4 pb-24 pt-6 md:px-8">
+          <div className="min-w-0 flex-[1_1_480px]">
+            <span className="blur-in inline-flex items-center gap-2 rounded-full border border-white/20 px-3.5 py-2 font-mono text-xs tracking-[0.08em] text-fog" style={{ animationDelay: ".1s" }}>
+              <span className="size-[7px] rounded-full bg-iris-soft" />
+              {CREATORS.length} CREATORS · {CREATORS.length} VOICES
+            </span>
+            <h1 className="mt-6 font-display text-[clamp(52px,7.4vw,116px)] font-semibold leading-[0.94] tracking-[-0.045em]">
+              <span className="mask-line">
+                <span style={{ animationDelay: ".2s" }}>
+                  Pick a <Accent>face.</Accent>
+                </span>
+              </span>{" "}
+              <span className="mask-line">
+                <span style={{ animationDelay: ".34s" }}>
+                  Hear your <Accent>ad.</Accent>
+                </span>
+              </span>
+            </h1>
+            <p className="blur-in mt-7 max-w-[500px] text-[clamp(17px,1.6vw,20px)] leading-[1.55] text-fog" style={{ animationDelay: ".6s" }}>
+              Write one line and choose who says it. Castly reads it in a real voice with word-locked captions, then turns it into a 6-second clip of that creator.
+            </p>
+            <div className="blur-in mt-8 flex flex-wrap gap-3" style={{ animationDelay: ".72s" }}>
+              <Link to={primary.to} className="btn-spring inline-flex min-h-14 items-center gap-2.5 rounded-full bg-iris px-7 text-[17px] font-semibold">
+                {primary.label}
+                <ArrowRight />
+              </Link>
+              {!me && (
+                <Link
+                  to="/login"
+                  className="inline-flex min-h-14 items-center rounded-full border-[1.5px] border-white/40 px-6 text-[17px] font-semibold transition-colors duration-300 hover:bg-white hover:text-night"
+                >
+                  Sign in
+                </Link>
+              )}
             </div>
-            <div className="fade-up min-w-0 flex-[1_1_420px]" style={{ animationDelay: ".35s" }}>
-              <HeroTile />
-            </div>
+            {!me && <p className="mt-4 font-mono text-xs tracking-[0.06em] text-dusk">FREE CLIPS ON SIGN-UP · NO CARD</p>}
           </div>
+          <HeroColumns />
         </section>
 
-        <BenchMock />
-
-        <section className="border-t border-hair px-4 py-24">
-          <Reveal className="mx-auto flex max-w-[1440px] flex-wrap gap-x-1 gap-y-4">
-            <SectionLabel className="flex-[1_1_400px] self-start md:sticky md:top-4">About</SectionLabel>
-            <div className="min-w-0 flex-[1_1_400px]">
-              <p className="max-w-[620px] text-[clamp(17px,1.6vw,20px)] leading-[1.625] text-muted">
-                Castly is a bench for UGC-style ads. Your drafts are saved to your account. Scripts and voices come from xAI, and a 6s clip of the cast face saying the hook is one button away.
-              </p>
-              <Link to={cta.to} className="uline mt-4 inline-block text-[clamp(17px,1.6vw,20px)]">
-                {cta.label}
-              </Link>
-            </div>
+        <section id="creators" className="mx-auto max-w-[1376px] px-4 pb-10 pt-20 md:px-8">
+          <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+            <h2 className="font-display text-[clamp(40px,5vw,72px)] font-semibold leading-[0.98] tracking-[-0.04em]">
+              Who should <Accent>say it?</Accent>
+            </h2>
+            <p className="max-w-[380px] text-[17px] leading-[1.55] text-fog">
+              Swap the creator and the same script comes back in a new face and voice. Hover a card to see them move.
+            </p>
+          </Reveal>
+          <Reveal className="grid grid-cols-2 gap-x-3.5 gap-y-8 md:grid-cols-4">
+            {CREATORS.map((creator) => (
+              <CreatorCard key={creator.id} creator={creator} />
+            ))}
           </Reveal>
         </section>
 
-        <section id="how" className="border-t border-hair px-4 py-24">
-          <div className="mx-auto max-w-[1440px]">
-            <Reveal>
-              <SectionLabel className="mb-8">How it works</SectionLabel>
-            </Reveal>
-            <div className="flex flex-wrap gap-2">
-              {STEPS.map((step, i) => (
-                <Reveal key={step.n} delay={i * 0.08} className="flex min-w-0 flex-[1_1_260px]">
-                  <Link
-                    to={cta.to}
-                    className="flex w-full flex-col justify-between gap-28 rounded-lg border border-line p-6 transition-colors duration-300 hover:border-ink"
-                  >
-                    <Mono className="text-sm">{step.n}</Mono>
-                    <div>
-                      <p className="text-[clamp(24px,2.2vw,28px)] font-medium tracking-[-0.6px]">{step.title}</p>
-                      <p className="mb-4 mt-2 text-base font-medium">{step.sub}</p>
-                      <p className="text-base leading-[1.625] text-muted">{step.body}</p>
-                    </div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
+        <section id="how" className="mx-auto max-w-[1376px] px-4 pb-10 pt-20 md:px-8">
+          <Reveal>
+            <h2 className="mb-7 font-display text-[clamp(36px,4vw,56px)] font-semibold tracking-[-0.04em]">
+              Four moves, <Accent>one</Accent> cut.
+            </h2>
+          </Reveal>
+          <div className="flex flex-wrap gap-3.5">
+            {STEPS.map((step, i) => (
+              <Reveal key={step.n} delay={i * 0.06} className="flex min-w-0 flex-[1_1_240px]">
+                <div className="lift flex w-full flex-col gap-12 rounded-[26px] border border-white/10 bg-night-2 p-6 hover:border-iris-soft/60 hover:bg-night-3">
+                  <span className="font-mono text-xs text-iris-soft">{step.n}</span>
+                  <span>
+                    <span className="block font-display text-[26px] font-semibold tracking-[-0.03em]">{step.title}</span>
+                    <span className="mt-1.5 block text-base leading-normal text-fog">{step.body}</span>
+                  </span>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </section>
 
-        <section id="creators" className="border-t border-hair px-4 py-24">
-          <div className="mx-auto max-w-[1440px]">
-            <Reveal className="mb-8 flex flex-wrap gap-x-1 gap-y-4">
-              <SectionLabel className="flex-[1_1_400px]">Creators</SectionLabel>
-              <div className="min-w-0 flex-[1_1_400px]">
-                <p className="max-w-[560px] text-[17px] leading-[1.625] text-muted">
-                  Same line, different face. Each creator brings their own voice and pace to the hook. Hover to see them move.
-                </p>
-                <Link to={cta.to} className="uline mt-4 inline-block text-[17px]">
-                  Cast one now
-                </Link>
-              </div>
-            </Reveal>
-            <Reveal className="flex flex-wrap gap-2">
-              {FEATURED.map((creator) => (
-                <CreatorTile key={creator.id} creator={creator} />
-              ))}
-            </Reveal>
-          </div>
-        </section>
-
-        <section aria-label="Sample hooks" className="overflow-hidden border-t border-hair py-24">
-          <div className="marquee-mask overflow-hidden">
-            <div className="marquee-track flex w-max items-center gap-5">
-              {[...HOOKS, ...HOOKS].map((hook, i) => (
-                <span key={i} className="shrink-0 whitespace-nowrap rounded-lg border border-line px-[22px] py-4 text-xl tracking-[-0.4px]" aria-hidden={i >= HOOKS.length || undefined}>
-                  {hook}
-                </span>
-              ))}
-            </div>
-          </div>
+        <section className="px-4 pb-4 pt-20">
+          <Reveal className="mx-auto flex max-w-[1408px] flex-wrap items-end justify-between gap-7 rounded-[40px] bg-iris px-6 py-10 md:px-[72px] md:py-[84px]">
+            <h2 className="min-w-0 flex-[1_1_480px] font-display text-[clamp(44px,6vw,96px)] font-semibold leading-[0.94] tracking-[-0.045em]">
+              Same line. <em className="font-serif font-normal italic">Any</em> face.
+            </h2>
+            <Link to={primary.to} className="btn-spring inline-flex min-h-[58px] items-center gap-2.5 rounded-full bg-white px-8 text-[17px] font-semibold text-night">
+              {me ? "Open the bench" : "Create your account"}
+              <ArrowRight />
+            </Link>
+          </Reveal>
         </section>
       </main>
 
-      <footer className="bg-hair px-4 pb-12 pt-16">
-        <Reveal className="mx-auto flex max-w-[1440px] flex-col gap-40 md:gap-52">
-          <div>
-            <h2 className="text-[clamp(36px,5.5vw,64px)] font-light leading-[1.1] tracking-[-2.5px]">
-              Write a line,
-              <br />
-              hear the cut.
-            </h2>
-            <Link
-              to={cta.to}
-              className="inline-block text-[clamp(36px,5.5vw,64px)] font-light leading-[1.1] tracking-[-2.5px] text-[#858585] transition-colors duration-300 hover:text-ink"
-            >
-              {cta.label}
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-between gap-3 text-[15px] text-muted">
-            <span>Castly. — A bench for UGC-style ads</span>
-            <span>Each 6s clip uses one credit. Failed clips are refunded.</span>
-          </div>
-        </Reveal>
+      <footer className="mx-auto flex max-w-[1376px] flex-wrap justify-between gap-3 px-4 pb-10 pt-6 text-[15px] text-dusk md:px-8">
+        <span>castly — a bench for UGC-style ads</span>
+        <span>Each 6s clip uses one credit. Failed clips are refunded.</span>
       </footer>
     </div>
   );

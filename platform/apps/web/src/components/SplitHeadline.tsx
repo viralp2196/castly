@@ -27,14 +27,14 @@ export function SplitHeadline({ parts, as: Tag = "h1", className, delay = 0.15, 
   );
   let index = 0;
   return (
-    <Tag className={cn("font-normal leading-none tracking-[-2.5px]", className)} aria-label={label}>
+    <Tag className={cn("split-headline font-normal leading-none tracking-[-2.5px]", className)} aria-label={label}>
       <span aria-hidden="true">
         {words.map(({ word, strong }, wi) => (
           <span key={wi} className="mr-[0.24em] inline-block whitespace-nowrap">
             {Array.from(word).map((char, ci) => (
               <span
                 key={ci}
-                className={cn("letter", strong ? "text-ink" : "text-soft")}
+                className={cn("letter", strong ? "text-ink" : "split-soft text-soft")}
                 style={{ animationDelay: `${(delay + index++ * step).toFixed(3)}s` }}
               >
                 {char}

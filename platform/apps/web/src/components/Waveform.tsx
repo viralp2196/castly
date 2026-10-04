@@ -30,7 +30,7 @@ export function Waveform({
           className={cn("wave-bar block min-w-[2px] max-w-[6px] flex-1 rounded-sm transition-colors duration-200", live && "is-live")}
           style={{
             height: h,
-            background: i < progress * bars ? "var(--color-ink)" : "#d1d5db",
+            background: i < progress * bars ? "var(--color-ink)" : "var(--color-track)",
             animationDelay: `${((i % 11) * 0.07).toFixed(2)}s`,
           }}
         />

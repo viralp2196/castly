@@ -101,7 +101,7 @@ export function Account() {
           <SectionLabel className="flex-[1_1_400px] self-start">Credits</SectionLabel>
           <div className="flex min-w-0 flex-[1_1_400px] flex-col gap-8">
             <div>
-              <p className="text-[clamp(48px,6vw,80px)] font-light leading-none tracking-[-3px]">{credits.data?.balance ?? me.credits}</p>
+              <p className="font-display text-[clamp(48px,6vw,80px)] font-semibold leading-none tracking-[-3px]">{credits.data?.balance ?? me.credits}</p>
               <p className="mt-2 text-[15px] text-muted">Video credits left. Each 6s clip uses one; clips that fail are refunded.</p>
             </div>
             {credits.data && (

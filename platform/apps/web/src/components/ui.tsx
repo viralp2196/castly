@@ -148,9 +148,9 @@ export function Notice({ tone = "error", children }: { tone?: "error" | "info" |
       role={tone === "error" ? "alert" : "status"}
       className={cn(
         "rounded-lg border px-4 py-3 text-[15px] leading-relaxed",
-        tone === "error" && "border-danger/30 bg-[#fef3f2] text-danger",
+        tone === "error" && "border-danger/30 bg-danger/10 text-danger",
         tone === "info" && "border-line bg-subtle text-ink",
-        tone === "ok" && "border-ok/30 bg-[#ecfdf3] text-ok",
+        tone === "ok" && "border-ok/30 bg-ok/10 text-ok",
       )}
     >
       {children}
@@ -159,7 +159,7 @@ export function Notice({ tone = "error", children }: { tone?: "error" | "info" |
 }
 
 export function SectionLabel({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={cn("text-[clamp(20px,1.8vw,24px)] leading-normal tracking-[-0.64px]", className)}>{children}</p>;
+  return <p className={cn("font-display text-[clamp(20px,1.8vw,24px)] font-medium leading-normal tracking-[-0.64px]", className)}>{children}</p>;
 }
 
 export function Progress({ value }: { value: number | null }) {

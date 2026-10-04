@@ -35,7 +35,7 @@ export function RequireAuth() {
 
 export function AppLayout() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="theme-night min-h-dvh bg-night font-sans text-ink">
       <AppHeader />
       <Outlet />
     </div>
