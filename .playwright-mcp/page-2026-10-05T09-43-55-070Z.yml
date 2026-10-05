@@ -1,0 +1,70 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - link "Castly home" [ref=e9] [cursor=pointer]:
+          - /url: /app
+          - text: castly
+        - generic [ref=e11]: — Castly Demo
+      - generic [ref=e12]:
+        - navigation "App" [ref=e13]:
+          - link "Projects" [ref=e14] [cursor=pointer]:
+            - /url: /app
+          - link "Library" [ref=e15] [cursor=pointer]:
+            - /url: /app/library
+          - link "Account" [ref=e16] [cursor=pointer]:
+            - /url: /app/account
+        - link "2 credits" [ref=e17] [cursor=pointer]:
+          - /url: /app/account
+        - button "Sign out" [ref=e18] [cursor=pointer]
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - heading "Your cuts." [level=1] [ref=e21]:
+        - generic [aria-hidden] [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: "Y"
+            - generic [ref=e25]: o
+            - generic [ref=e26]: u
+            - generic [ref=e27]: r
+          - generic [ref=e28]:
+            - generic [ref=e29]: c
+            - generic [ref=e30]: u
+            - generic [ref=e31]: t
+            - generic [ref=e32]: s
+            - generic [ref=e33]: .
+      - generic [ref=e34]:
+        - generic [ref=e35]: 2 credits left · one per clip
+        - button "New ad" [ref=e36] [cursor=pointer]
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - paragraph [ref=e41]: Start from a template
+        - paragraph [ref=e42]: Real scripts to remix. Change the product and the writer redrafts it.
+      - generic [ref=e43]:
+        - button "Skincare Morning Dew Serum “I stopped buying thick creams and my skin actually calmed down.”" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Skincare
+          - generic [ref=e48]:
+            - generic [ref=e49]: Morning Dew Serum
+            - generic [ref=e50]: “I stopped buying thick creams and my skin actually calmed down.”
+        - button "Apps Northline focus app “I have deleted four focus apps. This is the one still on the phone.”" [ref=e52] [cursor=pointer]:
+          - generic [ref=e53]: Apps
+          - generic [ref=e55]:
+            - generic [ref=e56]: Northline focus app
+            - generic [ref=e57]: “I have deleted four focus apps. This is the one still on the phone.”
+        - button "Apparel Heavyweight pocket tee “Most pocket tees feel like a receipt after the dryer.”" [ref=e59] [cursor=pointer]:
+          - generic [ref=e60]: Apparel
+          - generic [ref=e62]:
+            - generic [ref=e63]: Heavyweight pocket tee
+            - generic [ref=e64]: “Most pocket tees feel like a receipt after the dryer.”
+        - button "Supplements Afternoon magnesium “I am not going to tell you a powder fixed my sleep.”" [ref=e66] [cursor=pointer]:
+          - generic [ref=e67]: Supplements
+          - generic [ref=e69]:
+            - generic [ref=e70]: Afternoon magnesium
+            - generic [ref=e71]: “I am not going to tell you a powder fixed my sleep.”
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Projects
+      - link "Clip ready Morning Dew Serum “I stopped buying thick creams and my skin actually calmed down.” Edited 14 min ago" [ref=e75] [cursor=pointer]:
+        - /url: /app/projects/cmuuxosgt000exjq1pmdnnyq3
+        - generic [ref=e76]: Clip ready
+        - paragraph [ref=e78]: Morning Dew Serum
+        - paragraph [ref=e79]: “I stopped buying thick creams and my skin actually calmed down.”
+        - generic [ref=e80]: Edited 14 min ago

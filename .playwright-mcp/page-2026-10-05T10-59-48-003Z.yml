@@ -1,0 +1,122 @@
+- generic [ref=e5]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - link "Castly home" [ref=e9] [cursor=pointer]:
+          - /url: /app
+          - text: castly
+        - generic [ref=e11]: — Castly Demo
+      - generic [ref=e12]:
+        - navigation "App" [ref=e13]:
+          - link "Projects" [ref=e14] [cursor=pointer]:
+            - /url: /app
+          - link "Library" [ref=e15] [cursor=pointer]:
+            - /url: /app/library
+          - link "Account" [ref=e16] [cursor=pointer]:
+            - /url: /app/account
+        - link "1 credit" [ref=e17] [cursor=pointer]:
+          - /url: /app/account
+        - button "Sign out" [ref=e18] [cursor=pointer]
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - heading "Your cuts." [level=1] [ref=e21]:
+        - generic [aria-hidden] [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: "Y"
+            - generic [ref=e25]: o
+            - generic [ref=e26]: u
+            - generic [ref=e27]: r
+          - generic [ref=e28]:
+            - generic [ref=e29]: c
+            - generic [ref=e30]: u
+            - generic [ref=e31]: t
+            - generic [ref=e32]: s
+            - generic [ref=e33]: .
+      - generic [ref=e34]:
+        - generic [ref=e35]: 1 credit left · one per clip
+        - button "New ad" [ref=e36] [cursor=pointer]
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - paragraph [ref=e41]: Start from a template
+        - paragraph [ref=e42]: Real scripts to remix. Change the product and the writer redrafts it.
+      - generic [ref=e43]:
+        - button "Skincare Morning Dew Serum “I stopped buying thick creams and my skin actually calmed down.”" [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]: Skincare
+          - generic [ref=e48]:
+            - generic [ref=e49]: Morning Dew Serum
+            - generic [ref=e50]: “I stopped buying thick creams and my skin actually calmed down.”
+        - button "Apps Northline focus app “I have deleted four focus apps. This is the one still on the phone.”" [ref=e52] [cursor=pointer]:
+          - generic [ref=e53]: Apps
+          - generic [ref=e55]:
+            - generic [ref=e56]: Northline focus app
+            - generic [ref=e57]: “I have deleted four focus apps. This is the one still on the phone.”
+        - button "Apparel Heavyweight pocket tee “Most pocket tees feel like a receipt after the dryer.”" [ref=e59] [cursor=pointer]:
+          - generic [ref=e60]: Apparel
+          - generic [ref=e62]:
+            - generic [ref=e63]: Heavyweight pocket tee
+            - generic [ref=e64]: “Most pocket tees feel like a receipt after the dryer.”
+        - button "Supplements Afternoon magnesium “I am not going to tell you a powder fixed my sleep.”" [ref=e66] [cursor=pointer]:
+          - generic [ref=e67]: Supplements
+          - generic [ref=e69]:
+            - generic [ref=e70]: Afternoon magnesium
+            - generic [ref=e71]: “I am not going to tell you a powder fixed my sleep.”
+    - generic [ref=e72]:
+      - paragraph [ref=e73]: Projects
+      - generic [ref=e74]:
+        - generic [ref=e89]:
+          - link "Draft Afternoon magnesium “Third coffee was making the afternoon mean.” Edited 4 min ago" [ref=e156] [cursor=pointer]:
+            - /url: /app/projects/cmuv4kdgn000pxjitgoxghiyy
+            - generic [ref=e91]: Draft
+            - paragraph [ref=e93]: Afternoon magnesium
+            - paragraph [ref=e94]: “Third coffee was making the afternoon mean.”
+            - generic [ref=e95]: Edited 4 min ago
+          - button "Delete draft Afternoon magnesium" [ref=e96] [cursor=pointer]
+        - generic [ref=e99]:
+          - link "Draft Morning Dew Serum “I stopped buying thick creams and my skin actually calmed down.” Edited 46 min ago" [ref=e157] [cursor=pointer]:
+            - /url: /app/projects/cmuv3dqx2000nxjitwk70jsma
+            - generic [ref=e101]: Draft
+            - paragraph [ref=e103]: Morning Dew Serum
+            - paragraph [ref=e104]: “I stopped buying thick creams and my skin actually calmed down.”
+            - generic [ref=e105]: Edited 46 min ago
+          - button "Delete draft Morning Dew Serum" [ref=e106] [cursor=pointer]
+        - generic [ref=e109]:
+          - link "Draft Untitled cut No hook yet. Edited 46 min ago" [ref=e158] [cursor=pointer]:
+            - /url: /app/projects/cmuv3d2ut000lxjits0xjsf0j
+            - generic [ref=e111]: Draft
+            - paragraph [ref=e113]: Untitled cut
+            - paragraph [ref=e114]: No hook yet.
+            - generic [ref=e115]: Edited 46 min ago
+          - button "Delete draft Untitled cut" [ref=e116] [cursor=pointer]
+        - generic [ref=e119]:
+          - link "Draft Untitled cut No hook yet. Edited 47 min ago" [ref=e159] [cursor=pointer]:
+            - /url: /app/projects/cmuv3cg74000jxjitqwspkcig
+            - generic [ref=e121]: Draft
+            - paragraph [ref=e123]: Untitled cut
+            - paragraph [ref=e124]: No hook yet.
+            - generic [ref=e125]: Edited 47 min ago
+          - button "Delete draft Untitled cut" [ref=e126] [cursor=pointer]
+        - generic [ref=e129]:
+          - link "Draft Untitled cut No hook yet. Edited 1 h ago" [ref=e130] [cursor=pointer]:
+            - /url: /app/projects/cmuv2tges000hxjitucd7wq6e
+            - generic [ref=e131]: Draft
+            - paragraph [ref=e133]: Untitled cut
+            - paragraph [ref=e134]: No hook yet.
+            - generic [ref=e135]: Edited 1 h ago
+          - button "Delete draft Untitled cut" [ref=e136] [cursor=pointer]
+        - generic [ref=e139]:
+          - link "Draft Untitled cut No hook yet. Edited 1 h ago" [ref=e140] [cursor=pointer]:
+            - /url: /app/projects/cmuv2rpdm000fxjitrumusd78
+            - generic [ref=e141]: Draft
+            - paragraph [ref=e143]: Untitled cut
+            - paragraph [ref=e144]: No hook yet.
+            - generic [ref=e145]: Edited 1 h ago
+          - button "Delete draft Untitled cut" [ref=e146] [cursor=pointer]
+        - link "Clip ready Morning Dew Serum “I stopped buying thick creams and my skin actually calmed down.” Edited 1 h ago" [ref=e150] [cursor=pointer]:
+          - /url: /app/projects/cmuuxosgt000exjq1pmdnnyq3
+          - generic [ref=e151]: Clip ready
+          - paragraph [ref=e153]: Morning Dew Serum
+          - paragraph [ref=e154]: “I stopped buying thick creams and my skin actually calmed down.”
+          - generic [ref=e155]: Edited 1 h ago
+    - generic [ref=e160]:
+      - generic [ref=e161]: Deleted “Northline focus app”.
+      - button "Dismiss" [ref=e162] [cursor=pointer]

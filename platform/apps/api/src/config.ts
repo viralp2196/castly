@@ -8,6 +8,10 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
   WEB_ORIGIN: z.string().default("http://localhost:5173"),
   XAI_API_KEY: z.string().optional(),
+  LTX_API_URL: z.string().optional(),
+  LTX_DURATION: z.coerce.number().int().min(1).max(10).default(6),
+  LTX_STEPS: z.coerce.number().int().min(4).max(16).default(8),
+  LTX_ENHANCE: flag,
   FREE_CREDITS: z.coerce.number().int().min(0).default(3),
   DAILY_SCRIPT_LIMIT: z.coerce.number().int().min(0).default(50),
   DAILY_VOICE_LIMIT: z.coerce.number().int().min(0).default(60),
@@ -38,6 +42,12 @@ export type Config = {
   webOrigins: string[];
   publicWebUrl: string;
   xaiApiKey: string | undefined;
+  /** When set, clips render on this LTX-2.3 server instead of xAI. */
+  ltxApiUrl: string | undefined;
+  ltxDuration: number;
+  ltxSteps: number;
+  /** The server's prompt enhancer rewrites our prompt before rendering. */
+  ltxEnhance: boolean;
   freeCredits: number;
   dailyScriptLimit: number;
   dailyVoiceLimit: number;
@@ -88,6 +98,10 @@ export function loadConfig(source: NodeJS.ProcessEnv = process.env): Config {
     webOrigins,
     publicWebUrl: webOrigins[0] ?? "http://localhost:5173",
     xaiApiKey: blank(env.XAI_API_KEY),
+    ltxApiUrl: blank(env.LTX_API_URL),
+    ltxDuration: env.LTX_DURATION,
+    ltxSteps: env.LTX_STEPS,
+    ltxEnhance: isOn(env.LTX_ENHANCE, true),
     freeCredits: env.FREE_CREDITS,
     dailyScriptLimit: env.DAILY_SCRIPT_LIMIT,
     dailyVoiceLimit: env.DAILY_VOICE_LIMIT,

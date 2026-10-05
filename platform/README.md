@@ -61,6 +61,7 @@ API tests run `prisma migrate deploy` on the test database and truncate tables b
 - Script: `grok-4.5` drafts hook, body, CTA and two alternate hooks. Capped by `DAILY_SCRIPT_LIMIT` per user per UTC day.
 - Voice: xAI TTS with character timestamps, turned into word cues for the karaoke captions. The audio is stored; replaying the same line, voice and pace reuses it at no cost. Capped by `DAILY_VOICE_LIMIT`.
 - Video: `grok-imagine-video-1.5`, 6s, 720p, using the creator portrait as the opening frame and the product photo as a reference when the format is "Product in frame". At most `MAX_PENDING_VIDEOS` render at once per user.
+- Video on LTX instead: set `LTX_API_URL` to an LTX-2.3 server and clips go to its `POST /generate-character` (multi-subject reference). The creator portrait is the first subject and, for "Product in frame", the product photo the second. `LTX_DURATION` (1-10s) and `LTX_STEPS` (4-16) tune the render. Credits, refunds and storage work the same.
 
 **Video jobs.** A poller inside the API checks pending jobs every `POLL_INTERVAL_MS`. Finished clips are downloaded into our storage (xAI links expire). Failed, expired, or stuck jobs (`VIDEO_TIMEOUT_MINUTES`) are marked failed and refunded exactly once. The poller assumes one API instance; for several instances, move it to a single worker process.
 

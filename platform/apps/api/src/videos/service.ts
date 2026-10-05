@@ -13,10 +13,10 @@ const REFUND_NOTE = "Clip didn't finish";
  * so two clicks with one credit left can never both start a clip.
  */
 export async function startVideo(deps: Deps, userId: string, project: Project): Promise<Video> {
-  const { prisma, xai, storage, config } = deps;
+  const { prisma, video: gen, storage, config } = deps;
   const hook = readScript(project.script).hook.trim();
   if (hook.length < 8) throw badRequest("Write a hook before you generate a clip.");
-  if (!xai.configured) throw unavailable("Video generation isn't configured on this server yet.");
+  if (!gen.configured) throw unavailable("Video generation isn't configured on this server yet.");
 
   const pending = await prisma.video.count({ where: { userId, status: "pending" } });
   if (pending >= config.maxPendingVideos) {
@@ -36,6 +36,7 @@ export async function startVideo(deps: Deps, userId: string, project: Project): 
     format: project.format,
     product: project.product,
     hasProductImage: Boolean(productImage),
+    subjectRefs: gen.usesSubjectRefs,
   });
 
   const video = await prisma.$transaction(async (tx) => {
@@ -54,7 +55,8 @@ export async function startVideo(deps: Deps, userId: string, project: Project): 
   });
 
   try {
-    const requestId = await xai.startVideo({
+    const requestId = await gen.start({
+      key: video.id,
       prompt,
       portrait,
       productImage,
@@ -88,7 +90,7 @@ export async function failAndRefund({ prisma }: Pick<Deps, "prisma">, videoId: s
 
 /** One pass over pending clips: store finished ones, refund failed or stuck ones. */
 export async function pollVideos(deps: Deps) {
-  const { prisma, xai, storage, config, logger } = deps;
+  const { prisma, video: gen, storage, config, logger } = deps;
   const pending = await prisma.video.findMany({ where: { status: "pending" }, orderBy: { createdAt: "asc" }, take: 20 });
   for (const video of pending) {
     const age = Date.now() - video.createdAt.getTime();
@@ -102,9 +104,9 @@ export async function pollVideos(deps: Deps) {
       continue;
     }
     try {
-      const state = await xai.videoStatus(video.xaiRequestId);
-      if (state.status === "done" && state.url) {
-        const bytes = await xai.download(state.url);
+      const state = await gen.status(video.xaiRequestId);
+      if (state.status === "done") {
+        const bytes = await gen.download(video.xaiRequestId, state.url);
         const fileKey = `videos/${video.userId}/${video.id}.mp4`;
         await storage.put(fileKey, bytes, "video/mp4");
         await prisma.video.updateMany({

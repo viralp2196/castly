@@ -8,6 +8,7 @@ import { loadConfig, type Config } from "../src/config";
 import type { Deps } from "../src/deps";
 import type { Mail } from "../src/mailer";
 import type { SendOptions, Storage } from "../src/storage";
+import { xaiVideo } from "../src/video-gen";
 import type { VideoState, Xai } from "../src/xai";
 import { TEST_DATABASE_URL } from "./global-setup";
 
@@ -86,6 +87,7 @@ export function makeDeps(overrides: Partial<Record<string, string>> = {}) {
     logger: pino({ level: "silent" }),
     storage,
     xai,
+    video: xaiVideo(xai),
     mailer: { send: async (m) => void mail.push(m) },
   };
   return { deps, app: createApp(deps), xai, videoState: state, storage, mail };

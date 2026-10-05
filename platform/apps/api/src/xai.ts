@@ -51,14 +51,24 @@ function readJson(text: string) {
   return JSON.parse(text.slice(start, end + 1)) as Record<string, unknown>;
 }
 
-export function buildVideoPrompt(input: { sceneDetail: string; hook: string; format: string; product: string; hasProductImage: boolean }) {
+export function buildVideoPrompt(input: {
+  sceneDetail: string;
+  hook: string;
+  format: string;
+  product: string;
+  hasProductImage: boolean;
+  /** The model gets the portrait (and product) as subject references instead of an opening frame. */
+  subjectRefs?: boolean;
+}) {
+  const person = input.subjectRefs ? "The person from the first reference image" : "The same person from the opening frame";
+  const photo = input.subjectRefs ? "the second reference image" : "the reference photo";
   const hold =
     input.format === "in-hand" && input.hasProductImage
-      ? ` They hold ${input.product || "the product"} from the reference photo so the pack is visible.`
+      ? ` They hold ${input.product || "the product"} from ${photo} so the pack is visible.`
       : input.product
         ? ` They are talking about ${input.product}.`
         : "";
-  return `The same person from the opening frame, filmed on a phone, ${input.sceneDetail}. They look into the lens and say, casually, not like a commercial: "${input.hook}". Natural blinks, a small nod, handheld, no captions, no logos, no extra people.${hold}`;
+  return `${person}, filmed on a phone, ${input.sceneDetail}. They look into the lens and say, casually, not like a commercial: "${input.hook}". Natural blinks, a small nod, handheld, no captions, no logos, no extra people.${hold}`;
 }
 
 export function createXai(options: { apiKey?: string; fetch?: typeof fetch }): Xai {

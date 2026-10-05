@@ -1,0 +1,118 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Castly home" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - text: castly
+    - navigation "Main" [ref=e7]:
+      - link "Creators" [ref=e8] [cursor=pointer]:
+        - /url: "#creators"
+      - link "How it works" [ref=e9] [cursor=pointer]:
+        - /url: "#how"
+      - link "Sign in" [ref=e10] [cursor=pointer]:
+        - /url: /login
+      - link "Start free" [ref=e11] [cursor=pointer]:
+        - /url: /register
+  - main [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: 8 CREATORS · 8 VOICES
+        - heading [level=1] [ref=e17]:
+          - generic [ref=e19]:
+            - text: Pick a
+            - emphasis [ref=e20]: face.
+          - generic [ref=e22]:
+            - text: Hear your
+            - emphasis [ref=e23]: ad.
+        - paragraph [ref=e24]: Write one line and choose who says it. Castly reads it in a real voice with word-locked captions, then turns it into a 6-second clip of that creator.
+        - generic [ref=e25]:
+          - link "Start free" [ref=e26] [cursor=pointer]:
+            - /url: /register
+          - link "Sign in" [ref=e29] [cursor=pointer]:
+            - /url: /login
+        - paragraph [ref=e30]: FREE CLIPS ON SIGN-UP · NO CARD
+      - generic [ref=e59]:
+        - generic [ref=e60]: VOICE · PRIYA
+        - generic [ref=e61]: LIORA
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - heading [level=2] [ref=e95]:
+          - text: Who should
+          - emphasis [ref=e96]: say it?
+        - paragraph [ref=e97]: Swap the creator and the same script comes back in a new face and voice. Hover a card to see them move.
+      - generic [ref=e98]:
+        - link "Maya Chen, Morning routines Maya Chen Ara voice · Morning routines" [ref=e99] [cursor=pointer]:
+          - /url: /register
+          - img "Maya Chen, Morning routines" [ref=e101]
+          - generic [ref=e103]: Maya Chen
+          - generic [ref=e104]: Ara voice · Morning routines
+        - link "Jordan Hale, Streetwear Jordan Hale Rex voice · Streetwear" [ref=e105] [cursor=pointer]:
+          - /url: /register
+          - img "Jordan Hale, Streetwear" [ref=e107]
+          - generic [ref=e109]: Jordan Hale
+          - generic [ref=e110]: Rex voice · Streetwear
+        - link "Aisha Rahman, Beauty, close-up Aisha Rahman Eve voice · Beauty, close-up" [ref=e111] [cursor=pointer]:
+          - /url: /register
+          - img "Aisha Rahman, Beauty, close-up" [ref=e113]
+          - generic [ref=e115]: Aisha Rahman
+          - generic [ref=e116]: Eve voice · Beauty, close-up
+        - link "Leo Martins, Skincare, playful Leo Martins Leo voice · Skincare, playful" [ref=e117] [cursor=pointer]:
+          - /url: /register
+          - img "Leo Martins, Skincare, playful" [ref=e119]
+          - generic [ref=e120]: Leo Martins
+          - generic [ref=e121]: Leo voice · Skincare, playful
+        - link "Priya Shah, Kitchen and home Priya Shah Liora voice · Kitchen and home" [ref=e122] [cursor=pointer]:
+          - /url: /register
+          - img "Priya Shah, Kitchen and home" [ref=e124]
+          - generic [ref=e125]: Priya Shah
+          - generic [ref=e126]: Liora voice · Kitchen and home
+        - link "Noah Blake, Car confession Noah Blake Sal voice · Car confession" [ref=e127] [cursor=pointer]:
+          - /url: /register
+          - img "Noah Blake, Car confession" [ref=e129]
+          - generic [ref=e131]: Noah Blake
+          - generic [ref=e132]: Sal voice · Car confession
+        - link "Sofia Reyes, Habits and training Sofia Reyes Luna voice · Habits and training" [ref=e133] [cursor=pointer]:
+          - /url: /register
+          - img "Sofia Reyes, Habits and training" [ref=e135]
+          - generic [ref=e136]: Sofia Reyes
+          - generic [ref=e137]: Luna voice · Habits and training
+        - link "Kenji Sato, Apps and gadgets Kenji Sato Orion voice · Apps and gadgets" [ref=e138] [cursor=pointer]:
+          - /url: /register
+          - img "Kenji Sato, Apps and gadgets" [ref=e140]
+          - generic [ref=e141]: Kenji Sato
+          - generic [ref=e142]: Orion voice · Apps and gadgets
+    - generic [ref=e143]:
+      - heading [level=2] [ref=e145]:
+        - text: Four moves,
+        - emphasis [ref=e146]: one
+        - text: cut.
+      - generic [ref=e147]:
+        - generic [ref=e149]:
+          - generic [ref=e150]: "01"
+          - generic [ref=e151]:
+            - generic [ref=e152]: Write
+            - generic [ref=e153]: The writer drafts the hook; you keep the one that sounds like you.
+        - generic [ref=e155]:
+          - generic [ref=e156]: "02"
+          - generic [ref=e157]:
+            - generic [ref=e158]: Cast
+            - generic [ref=e159]: Choose the face and voice from 8 creators.
+        - generic [ref=e161]:
+          - generic [ref=e162]: "03"
+          - generic [ref=e163]:
+            - generic [ref=e164]: Hear
+            - generic [ref=e165]: A real voice with captions locked to every word.
+        - generic [ref=e167]:
+          - generic [ref=e168]: "04"
+          - generic [ref=e169]:
+            - generic [ref=e170]: Ship
+            - generic [ref=e171]: A 6s clip for one credit; failed takes are refunded.
+    - generic [ref=e173]:
+      - heading [level=2] [ref=e174]:
+        - text: Same line.
+        - emphasis [ref=e175]: Any
+        - text: face.
+      - link "Create your account" [ref=e176] [cursor=pointer]:
+        - /url: /register
+  - contentinfo [ref=e179]:
+    - generic [ref=e180]: castly — a bench for UGC-style ads
+    - generic [ref=e181]: Each 6s clip uses one credit. Failed clips are refunded.
